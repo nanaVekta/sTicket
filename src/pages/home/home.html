@@ -4,10 +4,8 @@
       Home
     </ion-title>
     <ion-buttons end>
-      <button (click)="getTickets()" ion-button clear icon-only>
-        <ion-icon color="danger" name="cart" item-right></ion-icon>
-        <ion-badge color="danger" *ngIf="!noTicket">*</ion-badge>
-
+      <button ion-button icon-only (click)="presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
       </button>
     </ion-buttons>
 

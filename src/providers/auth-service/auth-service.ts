@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 // let apiUrl = "http://localhost/sticket/api/";
-let apiUrl = "http://pesewawebsoft.com/apps/sticket/api/";
+let apiUrl = "https://pesewawebsoft.com/apps/sticket/api/";
 @Injectable()
 
 export class AuthServiceProvider {

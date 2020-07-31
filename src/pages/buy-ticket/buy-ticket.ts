@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import {AlertController, NavController, NavParams, ToastController, ViewController} from 'ionic-angular';
 import {Storage} from "@ionic/storage";
 import {PaymentPage} from "../payment/payment";
+import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
+import { HomePage } from '../home/home';
 
 @Component({
   selector: 'page-buy-ticket',
@@ -19,7 +21,8 @@ export class BuyTicketPage {
   vipTicket : any = 0;
   vvipTicket : any = 0;
   standardTicket : any = 0;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public view : ViewController, public alertCtrl : AlertController, public toastCtrl : ToastController, public storage : Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public view : ViewController, public alertCtrl : AlertController, public toastCtrl : ToastController, 
+    public storage : Storage, public sqlite: SQLite) {
   }
 
   ionViewDidLoad() {
@@ -62,7 +65,49 @@ export class BuyTicketPage {
 
             this.storage.set('sTTicketData', this.ticketData);
             //this.navCtrl.push(QrcodePage);
-            this.navCtrl.push(PaymentPage);
+            //this.navCtrl.push(PaymentPage);
+            this.sqlite.create({
+              name: 'sticket.db',
+              location: 'default'
+          }).then((db: SQLiteObject) => {
+              db.executeSql('SELECT * FROM ticket WHERE event_id =?',[this.ticketData.eventId])
+                  .then(result => {
+                      if(result.rows.length > 0){
+                          let quan = result.rows.item(0).quantity;
+                          let newQuan = parseInt(quan) + this.quantity;
+                          db.executeSql('UPDATE ticket SET quantity = ? WHERE event_id = ?',[newQuan, this.ticketData.eventId])
+                              .then(res => {
+                                  this.presentToast('Ticket added to chart');
+                                  //this.cartEmpty = false;
+                                  this.closeModal();
+                                  this.navCtrl.setRoot(HomePage)
+                              })
+                              .catch(e => {
+                                  this.presentToast("Error updating cart");
+                              });
+                      }
+                      else{
+                          db.executeSql('INSERT INTO ticket(event_id,type,quantity,total,date,eventName,affiliation) VALUES(?,?,?,?,?,?,?)',
+                              [this.ticketData.eventId,this.ticketData.type,this.ticketData.quantity,this.ticketData.total,this.ticketData.date,this.ticketData.eventName,this.ticketData.affiliation])
+                              .then(res => {
+                                  this.presentToast('Item added to chart');
+                                  //this.cartEmpty = false;
+                                  this.closeModal();
+                                  this.navCtrl.setRoot(HomePage)
+                              })
+                              .catch(e => {
+                                  this.presentToast("Error adding item");
+                              });
+                      }
+                  })
+                  .catch(e => {
+                      this.presentToast(e);
+                      console.log("select error "+e)
+                  });
+          }).catch(e => {
+              console.log("database error "+e);
+              this.presentToast(e);
+          });
           }
         }
       ]

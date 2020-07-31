@@ -100,7 +100,7 @@ export class EventPage {
   }
 
   getImages(){
-    let url = 'http://pesewawebsoft.com/apps/sticket/get-single-event-image.php?id='+this.apiData.id;
+    let url = 'https://pesewawebsoft.com/apps/sticket/get-single-event-image.php?id='+this.apiData.id;
     let data:Observable<any> = this.http.get(url);
     data.subscribe(results => {
       this.pictures = results;

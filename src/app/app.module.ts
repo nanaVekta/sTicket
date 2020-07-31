@@ -1,3 +1,7 @@
+import { CartPage } from './../pages/cart/cart';
+import { NewsPage } from './../pages/news/news';
+import { ViewTicketPage } from './../pages/view-ticket/view-ticket';
+import { TicketsPage } from './../pages/tickets/tickets';
 import { QrcodePage } from './../pages/qrcode/qrcode';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
@@ -16,6 +20,10 @@ import {HttpModule} from "@angular/http";
 import {EventPage} from "../pages/event/event";
 import {BuyTicketPage} from "../pages/buy-ticket/buy-ticket";
 import {PaymentPage} from "../pages/payment/payment";
+import { NgxQRCodeModule } from 'ngx-qrcode2';
+import { PopoverPage } from '../pages/popover/popover';
+import { NewsDetailPage } from '../pages/news-detail/news-detail';
+import {SQLite} from "@ionic-native/sqlite";
 
 
 @NgModule({
@@ -27,14 +35,21 @@ import {PaymentPage} from "../pages/payment/payment";
       EventPage,
       BuyTicketPage,
       PaymentPage,
-      QrcodePage
+      QrcodePage,
+      PopoverPage,
+      TicketsPage,
+      ViewTicketPage,
+      NewsPage,
+      NewsDetailPage,
+      CartPage
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
       IonicStorageModule.forRoot(),
       HttpClientModule,
-      HttpModule
+      HttpModule, 
+      NgxQRCodeModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -45,13 +60,20 @@ import {PaymentPage} from "../pages/payment/payment";
       EventPage,
       BuyTicketPage,
       PaymentPage,
-      QrcodePage
+      QrcodePage,
+      PopoverPage,
+      TicketsPage,
+      ViewTicketPage,
+      NewsPage,
+      NewsDetailPage,
+      CartPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AuthServiceProvider
+    AuthServiceProvider,
+    SQLite
   ]
 })
 export class AppModule {}

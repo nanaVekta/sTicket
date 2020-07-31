@@ -5,6 +5,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController, ToastController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { QrcodePage } from '../qrcode/qrcode';
+import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 
 
 @Component({
@@ -17,18 +18,21 @@ export class PaymentPage {
   public ticketData : any;
   resultData : any;
   public quantity : any;
-  public paymentData = {"user_id":"","token":"","amount":"", "account_name":"", "number":"", "payment_type":"", "event_name":"", "type":"", "eventId":"", "affiliation":"", "quantity":"", "date":"", "voucher":""};
+  public products: any;
+  public paymentData = {"user_id":"","token":"","amount":"", "account_name":"", "number":"", "payment_type":"", "products":{}, "voucher":""};
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage,
     private alertCtrl: AlertController, private loadingCtrl: LoadingController, private authService: AuthServiceProvider,
-    private toastCtrl: ToastController) {
+    private toastCtrl: ToastController, private sqlite: SQLite) {
+      this.paymentData.amount = this.navParams.get('total');
     this.storage.get('sTUserData')
     .then((res)=>{
       if(res){
         this.paymentData.account_name = res.userData.username;
         this.paymentData.user_id = res.userData.user_id;
         this.paymentData.token = res.userData.token;
+        this.getCartData();
 
       }
       else{
@@ -36,26 +40,6 @@ export class PaymentPage {
       }
     })
 
-      this.storage.get('sTTicketData').then((result) => {
-        if(result){
-            this.ticketData = result;
-            this.paymentData.event_name = this.ticketData.eventName;
-            this.ticket_user_id = this.ticketData.user_id;
-            this.paymentData.amount = this.ticketData.total;
-            this.paymentData.type = this.ticketData.type;
-            this.paymentData.eventId = this.ticketData.eventId;
-            this.paymentData.date = this.ticketData.date;
-            this.paymentData.quantity = this.ticketData.quantity;
-            this.paymentData.affiliation = this.ticketData.affiliation;
-  
-            if(this.ticket_user_id != this.paymentData.user_id){
-              this.navCtrl.setRoot(HomePage);
-            }
-        }
-        else{
-          this.navCtrl.setRoot(HomePage);
-        }
-    })
   }
 
   confirmPayment(type) {
@@ -179,8 +163,8 @@ export class PaymentPage {
                     this.navCtrl.push(QrcodePage)
                   }
                   else  {
-                    this.storage.set('blutixError', this.resultData);
-                    setTimeout(() => this.storage.get('blutixError').then(data=> {
+                    this.storage.set('sTError', this.resultData);
+                    setTimeout(() => this.storage.get('sTError').then(data=> {
                       if (data) {
 
                         let errorDetails = data.error;
@@ -231,5 +215,35 @@ export class PaymentPage {
     alert.present();
   }
 
+  getCartData(){
+    this.sqlite.create({
+      name: 'sticket.db',
+      location: 'default'
+  }).then((db: SQLiteObject) => {
 
+      db.executeSql('SELECT * FROM ticket',[])
+          .then(res => {
+              let totalItems = res.rows.length;
+              if(totalItems == 0){
+                  this.presentToast('No data found');
+                  this.navCtrl.setRoot(HomePage)
+              }
+              else{
+                 // this.noData = false;
+                  this.products = [];
+
+
+                  for(var i=0; i<totalItems; i++) {
+                     
+                      this.products.push({ticketid:res.rows.item(i).ticketid, event_id:res.rows.item(i).event_id, type:res.rows.item(i).type, quantity:res.rows.item(i).quantity, total:res.rows.item(i).total, date:res.rows.item(i).date, eventName:res.rows.item(i).eventName, affiliation:res.rows.item(i).affiliation});
+                      //console.log(JSON.stringify(this.totalAmount));
+
+                  }
+
+                  this.paymentData.products = this.products;
+              }
+          })
+          .catch(e => console.log(e));
+  }).catch(e => console.log(e));
+  }
 }
