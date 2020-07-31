@@ -5,6 +5,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { LoginPage } from '../login/login';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 @Component({
   selector: 'page-popover',
@@ -12,7 +13,8 @@ import { LoginPage } from '../login/login';
 })
 export class PopoverPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private storage: Storage, 
+    private iab: InAppBrowser) {
   }
 
 
@@ -21,7 +23,7 @@ export class PopoverPage {
   }
 
   goToNews(){
-    this.navCtrl.push(NewsPage)
+    this.iab.create('https://www.ghanafa.org/category/news');
   }
 
   goToCart(){

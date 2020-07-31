@@ -24,6 +24,8 @@ import { NgxQRCodeModule } from 'ngx-qrcode2';
 import { PopoverPage } from '../pages/popover/popover';
 import { NewsDetailPage } from '../pages/news-detail/news-detail';
 import {SQLite} from "@ionic-native/sqlite";
+import {InAppBrowser} from '@ionic-native/in-app-browser';
+
 
 
 @NgModule({
@@ -73,7 +75,8 @@ import {SQLite} from "@ionic-native/sqlite";
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthServiceProvider,
-    SQLite
+    SQLite, 
+    InAppBrowser
   ]
 })
 export class AppModule {}

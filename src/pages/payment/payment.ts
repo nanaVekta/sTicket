@@ -235,7 +235,7 @@ export class PaymentPage {
 
                   for(var i=0; i<totalItems; i++) {
                      
-                      this.products.push({ticketid:res.rows.item(i).ticketid, event_id:res.rows.item(i).event_id, type:res.rows.item(i).type, quantity:res.rows.item(i).quantity, total:res.rows.item(i).total, date:res.rows.item(i).date, eventName:res.rows.item(i).eventName, affiliation:res.rows.item(i).affiliation});
+                      this.products.push({event_id:res.rows.item(i).event_id, type:res.rows.item(i).type, quantity:res.rows.item(i).quantity, total:res.rows.item(i).total, date:res.rows.item(i).date, eventName:res.rows.item(i).eventName, affiliation:res.rows.item(i).affiliation});
                       //console.log(JSON.stringify(this.totalAmount));
 
                   }
