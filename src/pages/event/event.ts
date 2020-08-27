@@ -24,13 +24,11 @@ export class EventPage {
   eventTime: any;
   standardPrice: any;
   vipPrice : any;
-  vvipPrice : any;
   eventDesc : any;
   eventAddress : any;
   ticketsLeft : any;
   standardTickets :any;
   vipTickets : any;
-  vvipTickets : any;
   eventId : any;
   lat  : any;
   lng : any;
@@ -75,14 +73,12 @@ export class EventPage {
             this.eventTime = this.items.btx_time;
             this.standardPrice = this.items.btx_standard_price;
             this.vipPrice = this.items.btx_vip_price;
-            this.vvipPrice = this.items.btx_vvip_price;
             this.eventDesc = this.items.btx_desc;
             this.eventAddress = this.items.btx_address;
             this.eventId = this.items.btx_event_id;
             this.standardTickets = parseInt(this.items.btx_standard_tickets);
             this.vipTickets = parseInt(this.items.btx_vip_tickets);
-            this.vvipTickets = parseInt(this.items.btx_vvip_tickets);
-            this.ticketsLeft = this.standardTickets + this.vipTickets + this.vvipTickets;
+            this.ticketsLeft = this.standardTickets + this.vipTickets;
             this.lat = this.items.btx_lat;
             this.lng = this.items.btx_lng;
           }
@@ -100,7 +96,8 @@ export class EventPage {
   }
 
   getImages(){
-    let url = 'https://pesewawebsoft.com/apps/sticket/get-single-event-image.php?id='+this.apiData.id;
+    let url = 'https://koliko.io/apps/sticket/get-single-event-image.php?id='+this.apiData.id;
+    //let url = 'https://pesewawebsoft.com/apps/sticket/get-single-event-image.php?id='+this.apiData.id;
     let data:Observable<any> = this.http.get(url);
     data.subscribe(results => {
       this.pictures = results;
@@ -161,7 +158,7 @@ export class EventPage {
         this.userPostData.user_id = this.userDetails.user_id;
         this.userPostData.token = this.userDetails.token;
 
-        var modalPage = this.modalCtrl.create(BuyTicketPage,{eventId: this.eventId, eventName : this.eventName, standardPrice : this.standardPrice, vipPrice : this.vipPrice, vvipPrice : this.vvipPrice, standardTicket: this.standardTickets, vipTicket : this.vipTickets, vvipTicket : this.vvipTickets, userId: this.userPostData.user_id, token:this.userPostData.token,
+        var modalPage = this.modalCtrl.create(BuyTicketPage,{eventId: this.eventId, eventName : this.eventName, standardPrice : this.standardPrice, vipPrice : this.vipPrice, standardTicket: this.standardTickets, vipTicket : this.vipTickets, userId: this.userPostData.user_id, token:this.userPostData.token,
           eventDate : this.eventDate});
         modalPage.present();
       }

@@ -15,11 +15,9 @@ export class BuyTicketPage {
   eventName : any;
   standardPrice : any;
   vipPrice : any;
-  vvipPrice : any;
   quantity : number = 1;
   totalAmt : any = 0;
   vipTicket : any = 0;
-  vvipTicket : any = 0;
   standardTicket : any = 0;
   constructor(public navCtrl: NavController, public navParams: NavParams, public view : ViewController, public alertCtrl : AlertController, public toastCtrl : ToastController, 
     public storage : Storage, public sqlite: SQLite) {
@@ -32,10 +30,8 @@ export class BuyTicketPage {
     this.eventName = this.navParams.get('eventName');
     this.standardPrice = this.navParams.get('standardPrice');
     this.vipPrice = this.navParams.get('vipPrice');
-    this.vvipPrice = this.navParams.get('vvipPrice');
     this.totalAmt = this.navParams.get('standardPrice');
     this.vipTicket = this.navParams.get('vipTicket');
-    this.vvipTicket = this.navParams.get('vvipTicket');
     this.standardTicket = this.navParams.get('standardTicket');
     this.ticketData.date = this.navParams.get('eventDate');
   }
@@ -74,8 +70,10 @@ export class BuyTicketPage {
                   .then(result => {
                       if(result.rows.length > 0){
                           let quan = result.rows.item(0).quantity;
+                          let tot = result.rows.item(0).total;
                           let newQuan = parseInt(quan) + this.quantity;
-                          db.executeSql('UPDATE ticket SET quantity = ? WHERE event_id = ?',[newQuan, this.ticketData.eventId])
+                          let newTot = parseFloat(tot) + parseFloat(this.totalAmt);
+                          db.executeSql('UPDATE ticket SET quantity = ?, total = ? WHERE event_id = ?',[newQuan, newTot, this.ticketData.eventId])
                               .then(res => {
                                   this.presentToast('Ticket added to chart');
                                   //this.cartEmpty = false;
@@ -130,18 +128,7 @@ export class BuyTicketPage {
         this.totalAmt = this.quantity * parseFloat(this.standardPrice)
       }
     }
-    if(this.ticketData.type == "vvip"){
-      if(this.ticketData.quantity > this.vvipTicket){
-        this.presentToast("Maximum tickets reached")
-      }
-      else if(this.ticketData.quantity > 2){
-        this.presentToast("You can only buy 2 tickets.")
-      }
-      else{
-        this.quantity ++;
-        this.totalAmt = this.quantity * parseFloat(this.vvipPrice)
-      }
-    }
+    
     else{
       if(this.ticketData.quantity > this.vipTicket){
         this.presentToast("Maximum tickets reached")
@@ -166,10 +153,7 @@ export class BuyTicketPage {
         this.quantity --;
         this.totalAmt = this.quantity * parseFloat(this.standardPrice)
       }
-      else if(this.ticketData.type == "vvip"){
-        this.quantity --;
-        this.totalAmt = this.quantity * parseFloat(this.vvipPrice)
-      }
+      
       else{
         this.quantity --;
         this.totalAmt = this.quantity * parseFloat(this.vipPrice)
@@ -190,9 +174,6 @@ export class BuyTicketPage {
   onChange(value){
     if(value == 'standard'){
       this.totalAmt = this.quantity * parseFloat(this.standardPrice)
-    }
-    if(value == 'vvip'){
-      this.totalAmt = this.quantity * parseFloat(this.vvipPrice)
     }
     else{
       this.totalAmt = this.quantity * parseFloat(this.vipPrice)

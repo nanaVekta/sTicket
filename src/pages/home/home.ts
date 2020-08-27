@@ -49,7 +49,8 @@ export class HomePage {
   }
 
     countTickets(){
-        let url = 'https://pesewawebsoft.com/apps/sticket/get-num-tickets.php?userId='+this.user_id+'&token='+this.token;
+        let url = 'https://koliko.io/apps/sticket/get-num-tickets.php?userId='+this.user_id+'&token='+this.token;
+        // let url = 'https://pesewawebsoft.com/apps/sticket/get-num-tickets.php?userId='+this.user_id+'&token='+this.token;
         let data:Observable<any> = this.http.get(url);
         data.subscribe(result => {
 
@@ -94,7 +95,8 @@ export class HomePage {
         });
 
         loading.present();
-        let url = 'https://pesewawebsoft.com/apps/sticket/get-events.php?country='+country+'&lastId='+this.countryData.lastId+'&tag='+this.countryData.tag;
+        let url = 'https://koliko.io/apps/sticket/get-events.php?country='+country+'&lastId='+this.countryData.lastId+'&tag='+this.countryData.tag;
+        //let url = 'https://pesewawebsoft.com/apps/sticket/get-events.php?country='+country+'&lastId='+this.countryData.lastId+'&tag='+this.countryData.tag;
         let data:Observable<any> = this.http.get(url);
         data.subscribe(result => {
                 loading.dismiss();
@@ -119,7 +121,8 @@ export class HomePage {
     doRefresh(refresher) {
         this.countryData.lastId = 10000000000000000;
         setTimeout(() => {
-            let url = 'https://pesewawebsoft.com/apps/sticket/get-events.php?country='+this.countryData.country+'&lastId='+this.countryData.lastId+'&tag='+this.countryData.tag;
+            let url = 'https://koliko.io/apps/sticket/get-events.php?country='+this.countryData.country+'&lastId='+this.countryData.lastId+'&tag='+this.countryData.tag;
+            //let url = 'https://pesewawebsoft.com/apps/sticket/get-events.php?country='+this.countryData.country+'&lastId='+this.countryData.lastId+'&tag='+this.countryData.tag;
             let data:Observable<any> = this.http.get(url);
             data.subscribe(result => {
 
@@ -146,7 +149,8 @@ export class HomePage {
         return new Promise((resolve) => {
             setTimeout(() => {
 
-                let url = 'https://pesewawebsoft.com/apps/sticket/get-events.php?country='+this.countryData.country+'&lastId='+this.countryData.lastId+'&tag='+this.countryData.tag;
+                let url = 'https://koliko.io/apps/sticket/get-events.php?country='+this.countryData.country+'&lastId='+this.countryData.lastId+'&tag='+this.countryData.tag;
+                //let url = 'https://pesewawebsoft.com/apps/sticket/get-events.php?country='+this.countryData.country+'&lastId='+this.countryData.lastId+'&tag='+this.countryData.tag;
                 let data:Observable<any> = this.http.get(url);
                 data.subscribe(result => {
                         const  newData = result;

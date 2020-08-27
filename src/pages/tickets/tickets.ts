@@ -39,7 +39,8 @@ export class TicketsPage {
         });
 
         loading.present();
-        let url = 'https://pesewawebsoft.com/apps/sticket/get-user-tickets.php?user_id='+this.userData.user_id+'&lastId='+this.userData.last_id;
+        let url = 'https://koliko.io/apps/sticket/get-user-tickets.php?user_id='+this.userData.user_id+'&lastId='+this.userData.last_id;
+        //let url = 'https://pesewawebsoft.com/apps/sticket/get-user-tickets.php?user_id='+this.userData.user_id+'&lastId='+this.userData.last_id;
         let data:Observable<any> = this.http.get(url);
         data.subscribe(result => {
           loading.dismiss();
@@ -84,7 +85,8 @@ export class TicketsPage {
 
   doRefresh(refresher) {
     setTimeout(() => {
-      let url = 'https://pesewawebsoft.com/apps/sticket/get-user-tickets.php?user_id='+this.userData.user_id+'&lastId='+this.userData.last_id;
+      let url = 'https://koliko.io/apps/sticket/get-user-tickets.php?user_id='+this.userData.user_id+'&lastId='+this.userData.last_id;
+      //let url = 'https://pesewawebsoft.com/apps/sticket/get-user-tickets.php?user_id='+this.userData.user_id+'&lastId='+this.userData.last_id;
         let data:Observable<any> = this.http.get(url);
         data.subscribe(result => {
 
@@ -107,7 +109,8 @@ export class TicketsPage {
     return new Promise((resolve) => {
       setTimeout(() => {
 
-        let url = 'https://pesewawebsoft.com/apps/sticket/get-user-tickets.php?user_id='+this.userData.user_id+'&lastId='+this.userData.last_id;
+        let url = 'https://koliko.io/apps/sticket/get-user-tickets.php?user_id='+this.userData.user_id+'&lastId='+this.userData.last_id;
+        //let url = 'https://pesewawebsoft.com/apps/sticket/get-user-tickets.php?user_id='+this.userData.user_id+'&lastId='+this.userData.last_id;
         let data:Observable<any> = this.http.get(url);
         data.subscribe(result => {
           const  newData = result;

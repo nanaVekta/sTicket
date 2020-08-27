@@ -97,7 +97,7 @@ export class CartPage {
               location: 'default'
             }).then((db: SQLiteObject) => {
 
-              db.executeSql('DELETE FROM cart',[])
+              db.executeSql('DELETE FROM ticket',[])
                   .then(res => {
                     this.noData = true;
                     this.total = 0;
@@ -155,7 +155,7 @@ export class CartPage {
             //console.log(res);
             //this.presentToast("item deleted");
 
-                  db.executeSql('SELECT * FROM cart',[])
+                  db.executeSql('SELECT * FROM ticket',[])
                       .then(res => {
                           let totalItems = res.rows.length;
                           if(totalItems == 0){
